@@ -1,0 +1,9 @@
+/// player variables
+
+move_x = 0;
+move_speed = 5;
+
+move_y = 0;
+jump_height = 16;
+
+jump_count = 2;
