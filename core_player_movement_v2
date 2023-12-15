@@ -1,0 +1,33 @@
+/// core player movement
+
+move_x = keyboard_check(ord("D")) - keyboard_check(ord("A")); // horizontal movement (left/right arrows)
+move_x *= move_speed; // determines move speed in-game
+
+if (grounded) // if touches ground, then set vertical to zero
+{
+	
+	 while(!place_meeting(x, y + sign(move_y), obj_platform))
+    {
+        y += sign(move_y);
+    }
+ 
+    if(move_y > 0)
+    {
+        jump_count = max_jumps;
+    }
+ 
+    move_y = 0;
+	show_debug_message(jump_count);
+
+}
+else if (move_y < 8) move_y += 0.85; // gravity
+
+if (keyboard_check(ord("J")) && jump_count > 0) // j to jump
+{
+	move_y = -jump_height; // set vertical to jump height
+	jump_count --;
+}
+
+move_and_collide(move_x, move_y, obj_platform); // actually move
+
+move_and_collide(move_x, move_y, obj_platform, 4, 0, 0, move_speed, -1); // limits movement
