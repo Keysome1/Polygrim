@@ -1,0 +1,30 @@
+if (keyboard_check(ord("J"))) 
+{
+	buffer_counter = buffer_max;
+}
+
+if (buffer_counter > 0)
+{
+	buffer_counter -= 1;
+	
+	if (place_meeting(x, y+2, obj_platform))
+	{
+		if (jump_count > 0)
+			{
+				move_y = -jump_height;
+				jump_count --;
+				buffer_counter = 0;
+				show_debug_message(jump_count);
+			}
+	}
+	else if (move_y < fall_height) move_y += grav; //gravity
+}
+else if (buffer_counter <= 0)
+{
+	if (place_meeting(x, y+2, obj_platform))
+	{
+		move_y = 0;
+		jump_count = max_jumps;
+		show_debug_message(jump_count);
+	}
+}
