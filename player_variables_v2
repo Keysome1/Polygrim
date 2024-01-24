@@ -1,0 +1,30 @@
+ /// @description Insert description here
+// You can write your code in this editor
+
+/// player variables
+// all of these variables can be tweaked to create an adequate platforming experience
+
+move_x = 0; // movement in horizontal
+move_speed = 7;
+run_timer = 0;
+run_speed = 3;
+
+move_y = 0; // movement in vertical
+jump_height = 6;
+jump_height_second = 9;
+fall_speed = 8; 
+
+frict = 0.7; // friction in the horizontal
+grav = 0.55; // gravity in the vertical
+
+jump_count = 2; // number of jumps available to perform
+jump_holdframes = 15; // frames that determine jump length
+jump_timer = 0; // timer that stops jump
+
+buffer_counter = 0; // jump buffer timer
+buffer_max = 14; // jump buffer maximum
+
+grounded = false;
+
+
+
