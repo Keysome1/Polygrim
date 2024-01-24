@@ -1,0 +1,69 @@
+/// @description Insert description here
+// You can write your code in this editor
+
+/// this section handles basic variable and movement setup
+move_x = keyboard_check(ord("D")) - keyboard_check(ord("A")); // horizontal movement (left/right arrows)_
+move_x *= move_speed; // determines move speed in-game
+var _run = keyboard_check_pressed(ord("D"));
+if (_run)
+{
+	run_timer = 8;
+}
+
+if (run_timer > 0) //&&
+{
+	run_timer --;
+	if (_run)
+	{
+		move_x *= run_speed;
+	}
+}
+		
+	
+
+grounded = (place_meeting(x, y+2, obj_floor)); // checks collision with floor
+
+var _jump_pressed = keyboard_check_pressed(ord("J")); // jumping controls
+var _jump_hold = keyboard_check(ord("J"));
+
+if (grounded) // if touches ground, then set vertical to zero
+{
+	move_y = 0;
+	jump_count = 2;
+}
+else if (move_y < fall_speed) move_y += grav; // gravity calculations
+
+
+/// this section handles jumping
+if (_jump_pressed && jump_count > 0)
+{
+	jump_count --; // removes a jump
+	jump_timer = jump_holdframes; // sets jump timer to max
+}
+
+if !_jump_hold { jump_timer = 0; }; // if j is released, timer resets to zero, rendering the below section null
+	
+if (jump_timer > 0)
+{
+	move_y = -jump_height; // set vertical to jump height
+	jump_timer --; // depletes timer by 1 per frame
+	
+}
+if (_jump_pressed && jump_count = 0)
+{
+	buffer_counter = buffer_max; // sets buffer timer to max
+}
+if (buffer_counter > 0)
+{
+	buffer_counter -= 1; // depletes buffer timer by 1 per frame
+	if (grounded)
+	{
+		move_y = -jump_height_second;
+		buffer_counter = 0;
+		jump_count --;
+	}
+}
+
+
+move_and_collide(move_x, move_y, obj_floor); // actually move
+move_and_collide(move_x, move_y, obj_floor, 4, 0, 0, move_speed, -1); // limits movement
