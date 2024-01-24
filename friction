@@ -1,0 +1,16 @@
+/// this section handles friction
+if (round(move_x) != 0) // rounds velocity for accurate friction power
+{
+	var _friction_applied = sign(move_x) * frict; // calculates friction based on horizontal velocity
+
+	if (!grounded)
+	{
+		_friction_applied = _friction_applied / 4; // less friction is applied in mid-air
+	}
+
+	move_x -= _friction_applied; // friction subtracts from velocity
+}
+else
+{
+	move_x = 0; // velocity is reset to zero since it's too small to apply friction
+}
