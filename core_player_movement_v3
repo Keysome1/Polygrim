@@ -1,0 +1,148 @@
+/// @description Insert description here
+// You can write your code in this editor
+
+/// this section handles basic variable and movement setup
+move_x = keyboard_check(ord("D")) - keyboard_check(ord("A")); // horizontal movement (left/right arrows)_
+move_x *= move_speed; // determines move speed in-game
+var _runright = keyboard_check_pressed(ord("D"));
+var _runleft = keyboard_check_pressed(ord("A"));
+var _run_release = keyboard_check_released(ord("D")) || keyboard_check_released(ord("A"));
+
+// this section handles running (and air-dashing)
+if (_runright)
+{
+	run_timer = 16;
+	run_meter ++;
+	direct ++;
+}
+
+if (_runleft)
+{
+	run_timer = 16;
+	run_meter ++;
+	direct --;
+}
+
+if (run_timer > 0) 
+{
+	run_timer --;
+	if (_runright && run_meter = 2 && direct = 2)
+	{
+		if (grounded)
+		{move_speed = run_speed;}
+		else
+		{rightdash = true; dash_meter = 20;}
+	}
+	if (_runleft && run_meter = 2 && direct = -2)
+	{
+		if (grounded)
+		{move_speed = run_speed;}
+		else
+		{leftdash = true; dash_meter = 20;}
+	}
+}
+else if (_run_release && (direct != 2 || direct != -2))
+{
+	move_speed = move_speed_origin;
+	direct = 0;
+}
+
+if (leftdash = true)
+{
+	move_x = move_x + -dash_speed;
+	dash_meter --;
+}
+
+if (rightdash = true)
+{
+	move_x = move_x + dash_speed;
+	dash_meter --;
+}
+
+
+if (run_timer = 0)
+{ run_meter = 0;}
+
+if (dash_meter = 0)
+{
+	rightdash = false; leftdash = false;
+}
+
+// this section handles blocking and crouching
+if (keyboard_check(ord("S")))
+{
+	//show_debug_message("Crouch");
+}
+else
+{
+	//show_debug_message("Stand");
+}
+
+if (keyboard_check(ord("W")))
+{
+	//show_debug_message("Block");
+}
+else
+{
+	//show_debug_message("Unarmed");
+}
+
+grounded = (place_meeting(x, y+2, obj_floor)); // checks collision with floor
+
+var _jump_pressed = keyboard_check_pressed(ord("J")); // jumping controls
+var _jump_hold = keyboard_check(ord("J"));
+
+if (grounded) // if touches ground, then set vertical to zero
+{
+	move_y = 0;
+	jump_count = 2;
+}
+else if (move_y < fall_speed && rightdash = false && leftdash = false) move_y += grav; // gravity calculations
+else if (rightdash = true || leftdash = true) move_y = 0; // disables gravity during air-dash
+
+/// this section handles jumping
+if (_jump_pressed && jump_count > 0)
+{
+	jump_count --; // removes a jump
+	jump_timer = jump_holdframes; // sets jump timer to max
+}
+
+if !_jump_hold { jump_timer = 0; }; // if j is released, timer resets to zero, rendering the below section null
+	
+if (jump_timer > 0)
+{
+	move_y = -jump_height; // set vertical to jump height
+	jump_timer --; // depletes timer by 1 per frame
+	
+}
+if (_jump_pressed && jump_count = 0)
+{
+	buffer_counter = buffer_max; // sets buffer timer to max
+}
+if (buffer_counter > 0)
+{
+	buffer_counter -= 1; // depletes buffer timer by 1 per frame
+	if (grounded)
+	{
+		move_y = -jump_height_second;
+		buffer_counter = 0;
+		jump_count --;
+	}
+}
+
+
+// this section handles attacking
+
+
+
+
+// this section handles projectiles
+
+
+
+
+move_and_collide(move_x, move_y, obj_floor); // actually move
+move_and_collide(move_x, move_y, obj_floor, 4, 0, 0, move_speed, -1); // limits movement
+
+
+
