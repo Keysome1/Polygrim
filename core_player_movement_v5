@@ -1,0 +1,209 @@
+/// @description Insert description here
+// You can write your code in this editor
+
+// contents
+// 1- basic variables
+// 2- running and dashing
+// 3- blocking and crouching
+// 4- friction
+// 5- jumping
+// 6- attacking
+// 7- projectiles
+
+
+/// this section handles basic variable and movement setup
+move_x = keyboard_check(ord("D")) - keyboard_check(ord("A")); // horizontal movement (left/right arrows)_
+move_x *= move_speed; // determines move speed in-game
+var _runright = keyboard_check_pressed(ord("D"));
+var _runleft = keyboard_check_pressed(ord("A"));
+var _run_release = keyboard_check_released(ord("D")) || keyboard_check_released(ord("A")); // keys are released
+var _attack = keyboard_check_pressed(ord("K"));
+var _block = keyboard_check(ord("W"));
+var _crouch = keyboard_check(ord("S"));
+var _fire = keyboard_check_pressed(ord("L"));
+
+
+//--------------------------------------------------------------------------------------------------
+// this section handles running (and air-dashing)
+if (stamina < stamina_max && abs(move_x) < 7)
+{
+	stamina ++; // generates stamina when not running/dashing
+}
+else if (stamina > 0)
+{ 	stamina = stamina - 3; } // depletes stamina otherwise
+
+if (_runright)
+{
+	run_timer = 16; // sets running timer
+	run_meter ++; // determines if running is activated
+	direct ++; // left or right
+	projectile_left = false;
+}
+
+if (_runleft) // same as above
+{
+	run_timer = 16;
+	run_meter ++;
+	direct --;
+	projectile_left = true;
+}
+
+if (run_timer > 0 && stamina > 0) 
+{
+	run_timer --; // depletes time to activate running
+	if (_runright && run_meter = 2 && direct = 2)
+	{
+		if (grounded)
+		{move_speed = run_speed;} // sets new movement speed if grounded
+		else
+		{rightdash = true; dash_meter = 20;} // dashes in mid-air
+	}
+	if (_runleft && run_meter = 2 && direct = -2)
+	{
+		if (grounded)
+		{move_speed = run_speed;}
+		else
+		{leftdash = true; dash_meter = 20;}
+	}
+}
+else if (_run_release && (direct != 2 || direct != -2))
+{
+	move_speed = move_speed_origin; //resets movement speed
+	direct = 0; // neutral
+}
+
+if (leftdash = true)
+{
+	move_x = move_x + -dash_speed; // sets speed mid-air to a dash
+	dash_meter --; // dashes across frames instead of "teleporting"
+	stamina = stamina - 4; // depletes a large quantity of stamina
+}
+
+if (rightdash = true) // same as above
+{
+	move_x = move_x + dash_speed;
+	dash_meter --;
+	stamina = stamina - 4;
+}
+
+
+if (run_timer = 0)
+{ run_meter = 0;} // locks out of activating running as of the last tap
+
+if (dash_meter = 0)
+{
+	rightdash = false; leftdash = false; // locks out of air-dashing as of the last tap
+}
+
+
+
+//--------------------------------------------------------------------------------------------------
+/// this section handles friction
+if (round(move_x) != 0) // rounds velocity for accurate friction power
+{
+	var _friction_applied = sign(move_x) * frict; // calculates friction based on horizontal velocity
+
+	if (!grounded)
+	{
+		_friction_applied = _friction_applied / 4; // less friction is applied in mid-air
+	}
+
+	move_x -= _friction_applied; // friction subtracts from velocity
+}
+else
+{
+	move_x = 0; // velocity is reset to zero since it's too small to apply friction
+}
+
+
+
+
+
+//-------------------------------------------------------------------------------------------------------------
+/// this section handles jumping
+
+grounded = (place_meeting(x, y+2, obj_floor)); // checks collision with floor
+
+var _jump_pressed = keyboard_check_pressed(ord("J")); // jumping controls
+var _jump_hold = keyboard_check(ord("J"));
+
+if (grounded) // if touches ground, then set vertical to zero
+{
+	move_y = 0;
+	jump_count = 2;
+}
+else if (move_y < fall_speed && rightdash = false && leftdash = false) move_y += grav; // gravity calculations
+else if (rightdash = true || leftdash = true) move_y = 0; // disables gravity during air-dash
+
+if (_jump_pressed && jump_count > 0)
+{
+	jump_count --; // removes a jump
+	jump_timer = jump_holdframes; // sets jump timer to max
+}
+
+if !_jump_hold { jump_timer = 0; }; // if j is released, timer resets to zero, rendering the below section null
+	
+if (jump_timer > 0)
+{
+	move_y = -jump_height; // set vertical to jump height
+	jump_timer --; // depletes timer by 1 per frame
+	
+}
+if (_jump_pressed && jump_count = 0)
+{
+	buffer_counter = buffer_max; // sets buffer timer to max
+}
+if (buffer_counter > 0)
+{
+	buffer_counter -= 1; // depletes buffer timer by 1 per frame
+	if (grounded)
+	{
+		move_y = -jump_height_second;
+		buffer_counter = 0;
+		jump_count --;
+	}
+}
+
+
+
+//----------------------------------------------------------------------------------------------------
+// this section handles blocking and crouching
+
+if (_crouch && grounded) {sprite_index = position[1]; frict = ground_frict;}
+
+if (_block && grounded) {sprite_index = position[2]; frict = ground_frict;}
+
+if (_crouch && _block && grounded) {sprite_index = position[3];}
+
+if (!_crouch && !_block || _jump_pressed || move_speed = run_speed) {sprite_index = position[0]; frict = 0.7;}
+
+
+//---------------------------------------------------------------------------------------------------------
+// this section handles attacking
+if (_attack)
+{
+	attack_count ++;
+}
+
+
+//
+// this section handles projectiles
+if (_fire && !_block && projectile_count > 0) // clean this code up in the future! substitute for arrays or something else
+{
+	var _projectile_height = 24;
+	projectile_count --;
+	if (_crouch) _projectile_height = 64;
+	if (projectile_left)
+	{ instance_create_layer(x, y+_projectile_height, "Instances", obj_projectile_left); }
+	else
+	{ instance_create_layer(x+64, y+_projectile_height, "Instances", obj_projectile_right); }
+	show_debug_message("what");
+}
+
+
+
+move_and_collide(move_x, move_y, obj_floor); // actually move
+move_and_collide(move_x, move_y, obj_floor, 4, 0, 0, move_speed, -1); // limits movement
+
+
+
