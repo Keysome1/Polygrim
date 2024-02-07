@@ -1,0 +1,65 @@
+ /// @description Insert description here
+// You can write your code in this editor
+
+/// player variables
+// all of these variables can be tweaked to create an adequate platforming experience
+
+// horizontal/running variables
+move_x = 0; // movement in horizontal
+move_speed = 5.5;
+move_speed_origin = move_speed; // set original speed of dashing
+run_timer = 0;
+run_speed = 8;
+run_meter = 0;
+direct = 0; // sets direction of running / dashing
+
+
+// dashing variables
+dash_speed = 5;
+leftdash = false; // determines left dash
+rightdash = false; // determines right dash
+dash_meter = 0;
+
+// stamina variables
+stamina = 110; // amount of frames for running / dashing
+stamina_max = stamina;
+
+// simple jumping variables
+move_y = 0; // movement in vertical
+jump_height = 6;
+jump_height_second = 9; // jump_height for buffered jump
+fall_speed = 8; 
+
+// physics variables
+frict = 0.7; // friction in the horizontal
+ground_frict = 3; // friction while crouched/blocking
+grav = 0.55; // gravity in the vertical
+
+// advanced jumping vairables
+jump_count = 2; // number of jumps available to perform
+jump_holdframes = 15; // frames that determine jump length
+jump_timer = 0; // timer that stops jump
+
+buffer_counter = 0; // jump buffer timer
+buffer_max = 14; // jump buffer maximum
+
+// crouching/blocking variables
+position = [spr_player, spr_player_crouch, spr_player_block, spr_player_crouch_block] // stand, crouch, block, crouch-block
+
+// combat variables
+attack_count = 0;
+projectile_left = false;
+projectile_count = 50;
+
+// core variables
+hp = 5;
+
+
+grounded = false;
+
+
+
+
+
+
+
