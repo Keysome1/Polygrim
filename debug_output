@@ -1,0 +1,41 @@
+/// @description Insert description here
+// You can write your code in this editor
+
+draw_text(30,15,"Discs:");
+draw_text(90,15,projectile_count); // labels discs remaining
+draw_text(30,30,"Stamina:");
+draw_text(105,30, stamina);
+
+if keyboard_check(vk_alt)
+{
+	draw_text(1150,500,"X:");
+	draw_text(1300,500,x); 
+	draw_text(1150,515,"Y:");
+	draw_text(1300,515, y);
+	draw_text(1150,15,"Technical Jargon:");
+	draw_text(1150,30,"Horizontal:"); 
+	draw_text(1300,30,move_x);
+	draw_text(1150,45,"Vertical:");
+	draw_text(1300,45, move_y);
+	draw_text(1150,60,"Move speed:");
+	draw_text(1300,60,move_speed);
+	draw_text(1150,75,"Friction:");
+	draw_text(1300,75, frict);
+	draw_text(1150,90,"Jump count:");
+	draw_text(1300,90,jump_count);
+	draw_text(1150,105,"J. buffer:");
+	draw_text(1300,105, buffer_counter);
+	draw_text(1150,120,"Jump timer:");
+	draw_text(1300,120,jump_timer);
+	draw_text(1150,135,"Position:");
+	draw_text(1300,135, position);
+	draw_text(1150,150,"Attack #:");
+	draw_text(1300,150,attack_count); 
+	draw_text(1150,165,"Is grounded?:");
+	draw_text(1300,165, grounded);
+	draw_text(1150,180,"Ceiling?:");
+	draw_text(1300,180, ceiling);
+	draw_text(1150,195,"Tired?:");
+	draw_text(1300,195, tired);
+	draw_text(1150,210,"Cool dude:  You!");
+}
